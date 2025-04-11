@@ -6,12 +6,11 @@ import '../model/weather.dart';
 
 class WeatherService {
   final WeatherApiClient _weatherApiClient;
-  final Logger _logger = Logger();
 
   WeatherService(Dio dio, String baseUrl)
     : _weatherApiClient = WeatherApiClient(dio, baseUrl: baseUrl);
 
-  Future<Weather> getWeatherData(double latitude, double longitude) async {
+  Future<WeatherResponse> getWeatherData(double latitude, double longitude) async {
     try {
       final response = await _weatherApiClient.getWeather(
         latitude: latitude,
@@ -20,11 +19,9 @@ class WeatherService {
         units: 'metric',
       );
 
-      _logger.d("weatherData: $response");
-
       return response;
     } catch (e) {
-      return Weather(longitude: 0, latitude: 0, weatherData: List.empty(),);
+      rethrow;
     }
   }
 }

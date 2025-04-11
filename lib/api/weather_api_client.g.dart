@@ -17,7 +17,7 @@ class _WeatherApiClient implements WeatherApiClient {
 
 
   @override
-  Future<Weather> getWeather({
+  Future<WeatherResponse> getWeather({
     required double latitude,
     required double longitude,
     required String apiKey,
@@ -32,7 +32,7 @@ class _WeatherApiClient implements WeatherApiClient {
     };
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<Weather>(
+    final _options = _setStreamType<WeatherResponse>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -43,9 +43,9 @@ class _WeatherApiClient implements WeatherApiClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late Weather _value;
+    late WeatherResponse _value;
     try {
-      _value = Weather.fromJson(_result.data!);
+      _value = WeatherResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       rethrow;
     }

@@ -10,7 +10,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -31,15 +30,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   final WeatherService _weatherService = WeatherService(
     Dio(),
     'https://api.openweathermap.org',
   );
-  final double _latitude = 52.2298;
-  final double _longitude = 21.0118;
+  final double _latitude = 51.5074;
+  final double _longitude = -0.1278;
 
   String _weatherInfo = 'Loading...';
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -50,7 +49,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> _fetchWeather() async {
     final weather = await _weatherService.getWeatherData(_latitude, _longitude);
     setState(() {
-      _weatherInfo = "latitude: ${weather.latitude} longitude: ${weather.longitude} ${weather.weatherData.first.description}";
+      _weatherInfo =
+          "${weather.coord.lat}\n${weather.coord.lon}\n${weather.name}\n${weather.weather.first.main}\n${weather.weather.first.description}";
+      _isLoading = false;
     });
   }
 
@@ -58,10 +59,16 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Weather"), centerTitle: true),
-      body: Center(child: Text(
-        _weatherInfo,
-        style: TextStyle(fontSize: 20),
-      )),
+      body: Center(
+        child:
+            _isLoading
+                ? CircularProgressIndicator()
+                : Text(
+                  _weatherInfo,
+                  style: TextStyle(fontSize: 20),
+                  textAlign: TextAlign.center,
+                ),
+      ),
     );
   }
 }

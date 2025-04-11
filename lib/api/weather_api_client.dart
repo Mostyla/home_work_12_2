@@ -9,7 +9,7 @@ abstract class WeatherApiClient {
   factory WeatherApiClient(Dio dio, {String baseUrl}) = _WeatherApiClient;
 
   @GET('/data/2.5/weather')
-  Future<Weather> getWeather({
+  Future<WeatherResponse> getWeather({
     @Query('lat') required double latitude,
     @Query('lon') required double longitude,
     @Query('appid') required String apiKey,
